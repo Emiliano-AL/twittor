@@ -2,7 +2,7 @@
 importScripts('/twittor/js/sw-utils.js');
 
 const STATIC_CACHE = 'static-v2';
-const DYNAMIC_CACHE = 'dynamic-v1';
+const DYNAMIC_CACHE   = 'dynamic-v2';
 const INMUTABLE_CACHE = 'inmutable-v1';
 
 const APP_SHELL = [
@@ -43,10 +43,12 @@ self.addEventListener('install', e => {
 
 
 self.addEventListener('activate', e => {
-    console.log('activate event: ')
     const respuesta = caches.keys().then( keys => {
         keys.forEach( key => {
             if (  key !== STATIC_CACHE && key.includes('static') ) {
+                return caches.delete(key);
+            }
+            if (  key !== DYNAMIC_CACHE && key.includes('dynamic') ) {
                 return caches.delete(key);
             }
         });
